@@ -41,9 +41,21 @@ class Router
 					if ($_SERVER['REQUEST_METHOD']!='POST') {
 						include('views/header.php');
 					}
+					if (strpos($uri,'/')!==false) {
+							
+						}
 					if (class_exists($controllerName)) {
 						$controllerObject = new $controllerName;
-						$result = call_user_func_array(array($controllerObject, $actionName), $parameters);
+						if (method_exists($controllerObject, $actionName)===false) { 
+							$strings = explode('/',$uri);
+							if (method_exists($controllerObject, 'action'.ucfirst($strings[1]))) {
+								$result = call_user_func_array(array($controllerObject, 'action'.ucfirst($strings[1])), $parameters);
+							} else {
+								include('views/404.php');
+							}
+						} else {
+							$result = call_user_func_array(array($controllerObject, $actionName), $parameters);
+						}
 					}	else {
 						include('views/404.php');
 					}
