@@ -38,13 +38,18 @@ class Router
 					if (file_exists($modelFile)){
 						include_once($modelFile);
 					}
-				
+					if ($_SERVER['REQUEST_METHOD']!='POST') {
+						include('views/header.php');
+					}
 					if (class_exists($controllerName)) {
 						$controllerObject = new $controllerName;
 						$result = call_user_func_array(array($controllerObject, $actionName), $parameters);
 					}	else {
 						include('views/404.php');
-					}	
+					}
+					if ($_SERVER['REQUEST_METHOD']!='POST') {
+						include('views/footer.php');
+					}		
 					break;
 			}
 		}			
