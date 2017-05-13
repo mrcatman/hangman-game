@@ -21,4 +21,11 @@ class UserController
 		echo json_encode($data);
 		return true;
 	}
+	
+	public function actionHandleLogin()
+	{
+		$data = User::login($_POST['username'],$_POST['password']);
+		echo json_encode($data);
+		return true;
+	}
 }
